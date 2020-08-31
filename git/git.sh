@@ -1,7 +1,5 @@
 # Useful git snippets
 
-# Resources
-# Git cheatsheet: https://ndpsoftware.com/git-cheatsheet.html#loc=local_repo;
 # Recovering from mistakes: https://www.slideshare.net/nnja/recovering-from-git-mistakes-nina-zakharenko
 
 # Push to last commit
