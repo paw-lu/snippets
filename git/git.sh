@@ -17,3 +17,6 @@ git add --patch
 # Interactively add files
 # https://nuclearsquid.com/writings/git-add/
 git add --interactive
+
+# See file history
+git log --patch FILENAME
