@@ -8,3 +8,6 @@ ax.legend(loc="upper center", bbox_to_anchor=(0.5, 0), ncol=5)
 
 # Remove vertial grid lines
 ax.xaxis.grid(False)
+
+# Start graph
+fig, ax = plt.subplots(figsize=(20, 7))
