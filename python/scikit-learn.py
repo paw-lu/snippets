@@ -25,6 +25,7 @@ def make_pipeline(
         The names of features to drop.
 
     Returns
+    -------
     Pipeline
         A scikit-learn pipeline.
     """
