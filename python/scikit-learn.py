@@ -130,3 +130,9 @@ def get_categorical_feature_names(
         prefix, name = feature_name.split("_", maxsplit=1)
         categorical_feature_names.append(f"{feature_names_mapping[prefix]}_{name}")
     return categorical_feature_names
+
+
+# Param grid for pipeline
+param_grid = {
+    "model__alpha": [1, 2]
+}
