@@ -13,3 +13,6 @@ np.select(
     ],
     default="is_not_one_or_two",
 )
+
+# Plotting backend
+pd.options.plotting.backend = "altair"  # or "plotly"
