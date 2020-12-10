@@ -20,6 +20,7 @@ def material():
     return {
         "config": {
             "mark": {"color": mark_color},
+            "point": {"filled": True, "size": 100, "fill": mark_color, "opacity": 0.3},
             "arc": {"fill": mark_color},
             "area": {"stroke": background, "fill": mark_color, "strokeWidth": 3},
             "path": {"stroke": mark_color},
