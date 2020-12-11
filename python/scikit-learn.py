@@ -1,16 +1,19 @@
 """Snippets for scikit-learn."""
 from typing import List
 
+from sklearn.base import BaseEstimator
+from sklearn.compose import ColumnTransformer
+import sklearn.compose
 from sklearn.pipeline import Pipeline
 import sklearn.pipeline
 import sklearn.impute
 
 
-def make_pipeline(
-    cont_features: List[str], cat_features: List[str], drop_features: List[str], 
-) -> Pipeline:
+def make_preprocess_pipe(
+    cont_features: List[str], cat_features: List[str], drop_features: List[str]
+) -> ColumnTransformer:
     """
-    A template scikit-learn pipeline.
+    A scikit-learn preprocess pipeline.
 
     Splits features into three general tracks—continuous, categorical,
     and dropped.
@@ -26,8 +29,8 @@ def make_pipeline(
 
     Returns
     -------
-    Pipeline
-        A scikit-learn pipeline.
+    ColumnTransformer
+        A scikit-learn pipeline that independently transforms feature sets.
     """
     cont_pipe = sklearn.pipeline.Pipeline(
         [
@@ -46,7 +49,12 @@ def make_pipeline(
                     strategy="most_frequent", add_indicator=True
                 ),
             ),
-            ("onehot", sklearn.preprocessing.OneHotEncoder(categories="auto")),
+            (
+                "encode",
+                sklearn.preprocessing.OneHotEncoder(
+                    categories="auto", handle_unknown="ignore"
+                ),
+            ),
         ]
     )
     preprocess_pipe = sklearn.compose.ColumnTransformer(
@@ -57,8 +65,32 @@ def make_pipeline(
         ],
         n_jobs=-1,
     )
+    return preprocess_pipe
+
+
+def make_full_pipeline(
+    preprocess_pipe: ColumnTransformer, model: BaseEstimator
+) -> Pipeline:
+    """
+    A template scikit-learn pipeline.
+
+    The preprocess pipe is run before the model.
+
+    Parameters
+    ----------
+    preprocess_pipe : ColumnTransformer
+        A preprocessing pipeline.
+    model : BaseEstimator
+        A model following the scikit-learn api.
+
+    Returns
+    -------
+    Pipeline
+        A scikit-learn pipeline that runs the preprocessing pipeline before the
+        model.
+    """
     full_pipe = sklearn.pipeline.Pipeline(
-        [("preprocess", preprocess_pipe), ("model", sklearn.linear_model.Ridge())]
+        [("preprocess", preprocess_pipe), ("model", model)]
     )
     return full_pipe
 
@@ -133,6 +165,4 @@ def get_categorical_feature_names(
 
 
 # Param grid for pipeline
-param_grid = {
-    "model__alpha": [1, 2]
-}
+param_grid = {"model__alpha": [1, 2]}
