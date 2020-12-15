@@ -10,3 +10,6 @@
 # Use variables in shell
 name = "Steven"
 !echo {name}
+
+# Notebook only: interactive matplotlib
+%matplotlib notebook
