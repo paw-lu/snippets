@@ -16,3 +16,9 @@ np.select(
 
 # Plotting backend
 pd.options.plotting.backend = "altair"  # or "plotly"
+
+# Named aggregation
+df.groupby("A").agg(
+    sum_b=("B", "sum"),
+    std_c=("C", "std")
+)
