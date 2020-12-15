@@ -112,3 +112,14 @@ def material():
 
 alt.themes.register("material", material)
 alt.themes.enable("material")
+
+# Encoding codes
+"""
+| Data Type    | Shorthand Code | Description                       |
+| ------------ | -------------- | --------------------------------- |
+| quantitative | Q              | a continuous real-valued quantity |
+| ordinal      | O              | a discrete ordered quantity       |
+| nominal      | N              | a discrete unordered category     |
+| temporal     | T              | a time or date value              |
+| geojson      | G              | a geographic shape                |
+"""
