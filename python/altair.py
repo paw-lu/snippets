@@ -28,7 +28,7 @@ def material():
             "shape": {"stroke": mark_color},
             "symbol": {"stroke": mark_color},
             "circle": {"fill": mark_color, "size": 100, "opacity": 0.3, "filled": True},
-            "bar": {"cornerRadius": 5, "size": 40},
+            "bar": {"cornerRadiusTopLeft": 5, "cornerRadiusTopRight": 5, "size": 40},
             "background": background,
             "padding": {"top": 10, "right": 10, "bottom": 10, "left": 10},
             "style": {
