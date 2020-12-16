@@ -192,7 +192,7 @@ class SectionKFold:
         self,
         n_splits: int = 5,
         *,
-        shuffle: bool = False,
+        shuffle: bool = True,
         random_state: Optional[int] = None,
     ) -> None:
         """Constructor."""
