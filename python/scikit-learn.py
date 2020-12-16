@@ -166,3 +166,112 @@ def get_categorical_feature_names(
 
 # Param grid for pipeline
 param_grid = {"model__alpha": [1, 2]}
+
+
+class SectionKFold:
+    """
+    Split the dataset into folds based on sections. Each set of k
+    train/test splits is isolated to a single section of data.
+
+    Parameters
+    ----------
+    n_splits : int, default=5
+        Number of folds per section. Must be at least 2.
+    shuffle : bool, default=False
+        Whether to shuffle the data before splitting into batches.
+        Note that the samples within each split will not be shuffled.
+    random_state : int or RandomState instance, default=None
+        When `shuffle` is True, `random_state` affects the ordering of
+        the indices, which controls the randomness of each fold.
+        Otherwise, this parameter has no effect.
+        Pass an int for reproducible output across multiple function
+        calls.
+    """
+
+    def __init__(
+        self,
+        n_splits: int = 5,
+        *,
+        shuffle: bool = False,
+        random_state: Optional[int] = None,
+    ) -> None:
+        """Constructor."""
+        self.n_splits = n_splits
+        self.shuffle: bool = shuffle
+        self.random_state = random_state
+        pass
+
+    def get_n_splits(
+        self,
+        X: DataFrame,
+        sections: Union[str, List[str]],
+        y: Optional[Union[Series, ndarray]] = None,
+        groups: Optional[Union[Series, ndarray]] = None,
+    ) -> int:
+        """
+        Returns the number of splitting iterations in the cross-validator.
+
+        Parameters
+        ----------
+        X : DataFrame
+            The data to calculate the number of splits.
+        sections : Union[str, List[str]]
+            The column name to section off the data.
+        y : Optional[Union[Series, ndarray]]
+            Always ignored, exists for compatibility.
+        groups : Optional[Union[Series, ndarray]]
+            Always ignored, exists for compatibility.
+
+        Returns
+        -------
+        n_splits : int
+            Returns the number of splitting iterations in the cross-validator.
+        """
+        return X.groupby(sections).count().index.shape[0] * self.n_splits
+
+    def split(
+        self,
+        X: DataFrame,
+        sections: Union[Series, ndarray],
+        y: Optional[Union[Series, ndarray]] = None,
+        groups: Optional[Union[Series, ndarray]] = None,
+    ) -> Generator[Tuple[ndarray, ndarray], None, None]:
+        """
+        Generate indices to split data into training and test set.
+
+        Parameters
+        ----------
+        X : DataFrame
+            Training data, where n_samples is the number of samples
+            and n_features is the number of features.
+        sections : Union[str, List[str]]
+            The column name to section off the data.
+        y : array-like of shape (n_samples,), default=None
+            The target variable for supervised learning problems.
+        groups : array-like of shape (n_samples,), default=None
+            Group labels for the samples used while splitting the
+            dataset into train/test set.
+
+        Yields
+        ------
+        train : ndarray
+            The training set indices for that split.
+        test : ndarray
+            The testing set indices for that split.
+        """
+        X = X.copy().reset_index()
+        cv = sklearn.model_selection.KFold(
+            n_splits=self.n_splits, shuffle=self.shuffle, random_state=self.random_state
+        )
+        for section_name, section_data in X.groupby(sections):
+            if (n_samples := section_data.shape[0]) < self.n_splits:
+                raise ValueError(
+                    "Cannot have the number of splits"
+                    f" n_splits={self.n_splits} greater than the number"
+                    f" of samples n_samples={n_samples} in"
+                    f" {section_name}"
+                )
+            for section_train, section_test in cv.split(section_data):
+                yield section_data.iloc[
+                    section_train
+                ].index.to_numpy(), section_data.iloc[section_test].index.to_numpy()
