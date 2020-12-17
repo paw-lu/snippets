@@ -17,3 +17,6 @@ axins.plot(x, y)
 axins.xaxis.set_visible(False)
 axins.yaxis.set_visible(False)
 mark_inset(ax, axins, loc1=2, loc2=4, fc="none", ec=0.5)  # Adds lines that connect to their points to the original plot
+
+# Shortcuts for cycle colors
+{"C0", "C1", "C2", ...}
