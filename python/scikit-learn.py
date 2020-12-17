@@ -275,3 +275,14 @@ class SectionKFold:
                 yield section_data.iloc[
                     section_train
                 ].index.to_numpy(), section_data.iloc[section_test].index.to_numpy()
+
+
+# SVM classification
+"""
+| Class         | Time complexity       | Out-of-core | Kernel trick |
+| ------------- | --------------------- | ----------- | ------------ |
+| LinearSVC     | O(m ⨉ n)              | No          | No           |
+| SGDClassifier | O(m ⨉ n)              | Yes         | No           |
+| SVC           | O(m² ⨉ n) – O(m³ ⨉ n) | No          | Yes          |
+"""
+# For SVC kernels, try linear first, then Gaussian RBF kernel.
