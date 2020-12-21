@@ -1,6 +1,9 @@
 # Pandas snippets
 import pandas as pd
 
+# if else conditional
+np.where(df.a == 1, "is_one", "not_one")
+
 # Conditional-like "CASE"
 np.select(
     [
