@@ -133,3 +133,24 @@ alt.themes.enable("material")
         y=alt.Y("b", title="Display b"),
     )
 )
+
+# Legends on added plots
+chart_1 = (
+    alt.Chart(df.assign(chart1="chart1"))
+    .mark_point()
+    .encode(
+        x="a",
+        y="b",
+        color=alt.Color("chart1", title=""),
+    )
+)
+chart_2 = (
+    alt.Chart(df.assign(chart2="chart2"))
+    .mark_point()
+    .encode(
+        x="a",
+        y="b",
+        shape=alt.Color("chart2", title=""),
+    )
+)
+chart_1 + chart_2
