@@ -123,3 +123,13 @@ alt.themes.enable("material")
 | temporal     | T              | a time or date value              |
 | geojson      | G              | a geographic shape                |
 """
+
+# Custom names
+(
+    alt.Chart(df)
+    .mark_point()
+    .encode(
+        x=alt.X("a", title="Display title"),
+        y=alt.Y("b", title="Display b"),
+    )
+)
