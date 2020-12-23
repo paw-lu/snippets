@@ -11,5 +11,10 @@
 name = "Steven"
 !echo {name}
 
+# Magics
 # Notebook only: interactive matplotlib
 %matplotlib notebook
+# Open cell in editor (ipython only)
+%edit
+
+# Use editor to write in cells: F2
